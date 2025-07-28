@@ -12,4 +12,11 @@ Develop a data management tool that allows HEVA to store data collected from var
 git clone https://github.com/Powerlearnproject/Entrepreneur-Support-Data-Management-.git
 ```
 
+``` bash
+cd Entrepreneur-Support-Data-Management
+```
+
+After cloning, start building your solution. 
+Upload your code to GitHub and share with us your own repo
+
 ### Happy Hacking!
