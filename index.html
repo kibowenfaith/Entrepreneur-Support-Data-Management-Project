@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrepreneur Support Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-rocket"></i>
+                <span>EntrepreneurHub</span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#dashboard" class="nav-link" id="dashboard-link" style="display: none;">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#profiles" class="nav-link">Profiles</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-primary" id="login-btn">Login</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-secondary" id="register-btn">Register</button>
+                </li>
+                <li class="nav-item" id="logout-item" style="display: none;">
+                    <button class="btn btn-danger" id="logout-btn">Logout</button>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Empower Your Entrepreneurial Journey</h1>
+                    <p>Connect, manage, and grow your business with our comprehensive support platform</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-large" id="get-started-btn">Get Started</button>
+                        <button class="btn btn-outline btn-large" id="learn-more-btn">Learn More</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2>About EntrepreneurHub</h2>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Connect</h3>
+                        <p>Network with fellow entrepreneurs and build meaningful business relationships</p>
+                    </div>
+                    <div class="about-card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Track Progress</h3>
+                        <p>Monitor your business growth with detailed analytics and income tracking</p>
+                    </div>
+                    <div class="about-card">
+                        <i class="fas fa-handshake"></i>
+                        <h3>Find Funding</h3>
+                        <p>Connect with potential investors and manage your funding relationships</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <div class="container">
+                <h2>Dashboard</h2>
+                <div class="dashboard-grid">
+                    <!-- Business Profile Card -->
+                    <div class="dashboard-card">
+                        <h3>Business Profile</h3>
+                        <div id="profile-info">
+                            <p>Complete your business profile to get started</p>
+                            <button class="btn btn-primary" id="create-profile-btn">Create Profile</button>
+                        </div>
+                    </div>
+
+                    <!-- Income Chart Card -->
+                    <div class="dashboard-card">
+                        <h3>Income Overview</h3>
+                        <div class="chart-container">
+                            <canvas id="incomeChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Card -->
+                    <div class="dashboard-card">
+                        <h3>Quick Actions</h3>
+                        <div class="quick-actions">
+                            <button class="btn btn-outline" id="add-income-btn">Add Income Record</button>
+                            <button class="btn btn-outline" id="add-funder-btn">Add Funder</button>
+                            <button class="btn btn-outline" id="edit-profile-btn">Edit Profile</button>
+                        </div>
+                    </div>
+
+                    <!-- Funders Card -->
+                    <div class="dashboard-card">
+                        <h3>Your Funders</h3>
+                        <div id="funders-list">
+                            <p>No funders added yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profiles Section -->
+        <section id="profiles" class="section">
+            <div class="container">
+                <h2>Entrepreneur Profiles</h2>
+                <div class="filters">
+                    <select id="field-filter" class="filter-select">
+                        <option value="">All Fields</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Education">Education</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Services">Services</option>
+                    </select>
+                </div>
+                <div id="profiles-grid" class="profiles-grid">
+                    <!-- Profiles will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>Get in Touch</h3>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>support@entrepreneurhub.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+254 700 000 000</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Nairobi, Kenya</span>
+                        </div>
+                    </div>
+                    <form class="contact-form" id="contact-form">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="login-close">&times;</span>
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="switch-to-register">Register here</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="register-close">&times;</span>
+            <h2>Register</h2>
+            <form id="register-form">
+                <input type="text" id="register-name" placeholder="Full Name" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <select id="register-field" required>
+                    <option value="">Select Business Field</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Services">Services</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" id="switch-to-login">Login here</a></p>
+        </div>
+    </div>
+
+    <!-- Business Profile Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="profile-close">&times;</span>
+            <h2 id="profile-modal-title">Create Business Profile</h2>
+            <form id="profile-form">
+                <div class="profile-picture-section">
+                    <div class="profile-picture-preview" id="profile-picture-preview">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Click to add profile picture</span>
+                    </div>
+                    <input type="file" id="profile-picture" accept="image/*" style="display: none;">
+                </div>
+                <input type="text" id="business-name" placeholder="Business Name" required>
+                <textarea id="business-description" placeholder="Business Description" rows="4" required></textarea>
+                <input type="number" id="business-started" placeholder="Year Started" min="1900" max="2024" required>
+                <label>
+                    <input type="checkbox" id="business-public"> Make profile public
+                </label>
+                <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Income Modal -->
+    <div id="income-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="income-close">&times;</span>
+            <h2>Add Income Record</h2>
+            <form id="income-form">
+                <input type="number" id="income-year" placeholder="Year" min="1900" max="2024" required>
+                <input type="number" id="income-amount" placeholder="Amount (KSH)" min="0" step="0.01" required>
+                <button type="submit" class="btn btn-primary">Add Income</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Funder Modal -->
+    <div id="funder-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="funder-close">&times;</span>
+            <h2>Add Funder</h2>
+            <form id="funder-form">
+                <input type="text" id="funder-name" placeholder="Funder Name" required>
+                <select id="funder-method" required>
+                    <option value="">Select Funding Method</option>
+                    <option value="Grant">Grant</option>
+                    <option value="Loan">Loan</option>
+                    <option value="Investment">Investment</option>
+                    <option value="Donation">Donation</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Add Funder</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Detail Modal -->
+    <div id="profile-detail-modal" class="modal">
+        <div class="modal-content profile-detail-content">
+            <span class="close" id="profile-detail-close">&times;</span>
+            <div id="profile-detail-content">
+                <!-- Profile details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatbot" class="chatbot">
+        <div class="chatbot-header" id="chatbot-header">
+            <i class="fas fa-robot"></i>
+            <span>Support Assistant</span>
+            <button id="chatbot-toggle" class="chatbot-toggle">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+        <div class="chatbot-body" id="chatbot-body">
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="bot-message">
+                    <p>Hello! I'm here to help you with the platform. Ask me anything!</p>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbot-input" placeholder="Type your message...">
+                <button id="chatbot-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
