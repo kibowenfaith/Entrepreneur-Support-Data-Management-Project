@@ -15,7 +15,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        process.env.CLIENT_URL
+    ].filter(Boolean),
     credentials: true
 }));
 app.use(express.json());
@@ -49,10 +53,7 @@ app.use('*', (req, res) => {
 });
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
     console.log('✅ Connected to MongoDB Atlas');
     console.log('📊 Database:', mongoose.connection.name);

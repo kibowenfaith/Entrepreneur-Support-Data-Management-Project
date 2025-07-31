@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Connection Test</title>
+</head>
+<body>
+    <h1>API Connection Test</h1>
+    <button onclick="testConnection()">Test API Connection</button>
+    <button onclick="testRegistration()">Test Registration</button>
+    <div id="result"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+
+        async function testConnection() {
+            const resultDiv = document.getElementById('result');
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<h3>Health Check Success:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                resultDiv.style.color = 'green';
+            } catch (error) {
+                resultDiv.innerHTML = `<h3>Health Check Error:</h3><pre>${error.message}</pre>`;
+                resultDiv.style.color = 'red';
+                console.error('Health check error:', error);
+            }
+        }
+
+        async function testRegistration() {
+            const resultDiv = document.getElementById('result');
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: 'Test User',
+                        email: 'test' + Date.now() + '@example.com',
+                        password: 'password123',
+                        businessField: 'Technology'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<h3>Registration Success:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                    resultDiv.style.color = 'green';
+                } else {
+                    resultDiv.innerHTML = `<h3>Registration Failed:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                    resultDiv.style.color = 'orange';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<h3>Registration Error:</h3><pre>${error.message}</pre>`;
+                resultDiv.style.color = 'red';
+                console.error('Registration error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

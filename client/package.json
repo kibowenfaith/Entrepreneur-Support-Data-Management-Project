@@ -1,0 +1,22 @@
+{
+  "name": "entrepreneur-support-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Entrepreneur Support Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 3000 -o",
+    "dev": "http-server -p 3000 -o -c-1"
+  },
+  "keywords": [
+    "entrepreneur",
+    "frontend",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "FaithJeptoo",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
