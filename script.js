@@ -1,3 +1,6 @@
+// API Configuration
+const API_BASE_URL = 'http://localhost:5000/api';
+
 // Global variables
 let currentUser = null;
 let currentBusiness = null;
@@ -256,66 +259,135 @@ function closeModal(modalId) {
 }
 
 // Authentication functions
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     
-    // Simulate login (replace with actual API call)
-    if (email && password) {
-        currentUser = {
-            id: 1,
-            name: "Demo User",
-            email: email,
-            businessField: "Technology"
-        };
-        
-        // Check if user has a business profile
-        const userBusiness = sampleProfiles.find(p => p.owner === currentUser.name);
-        if (userBusiness) {
-            currentBusiness = userBusiness;
-        }
-        
-        updateAuthUI();
-        closeModal('login-modal');
-        showSection('dashboard');
-        showMessage('Login successful!', 'success');
-    } else {
+    if (!email || !password) {
         showMessage('Please fill in all fields', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            currentUser = data.user;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            
+            // Load user's business profile
+            await loadUserBusiness();
+            
+            updateAuthUI();
+            closeModal('login-modal');
+            showSection('dashboard');
+            showMessage('Login successful!', 'success');
+        } else {
+            showMessage(data.error || 'Login failed', 'error');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showMessage('Network error. Please try again.', 'error');
     }
 }
 
-function handleRegister(e) {
+async function handleRegister(e) {
     e.preventDefault();
     const name = document.getElementById('register-name').value;
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
-    const field = document.getElementById('register-field').value;
+    const businessField = document.getElementById('register-field').value;
     
-    // Simulate registration (replace with actual API call)
-    if (name && email && password && field) {
-        currentUser = {
-            id: Date.now(),
-            name: name,
-            email: email,
-            businessField: field
-        };
-        
-        updateAuthUI();
-        closeModal('register-modal');
-        showSection('dashboard');
-        showMessage('Registration successful! Welcome to EntrepreneurHub!', 'success');
-    } else {
+    if (!name || !email || !password || !businessField) {
         showMessage('Please fill in all fields', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password, businessField })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            currentUser = data.user;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            
+            updateAuthUI();
+            closeModal('register-modal');
+            showSection('dashboard');
+            showMessage('Registration successful! Welcome to EntrepreneurHub!', 'success');
+        } else {
+            showMessage(data.error || 'Registration failed', 'error');
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        showMessage('Network error. Please try again.', 'error');
     }
 }
 
 function logout() {
     currentUser = null;
     currentBusiness = null;
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     updateAuthUI();
     showSection('home');
     showMessage('Logged out successfully', 'success');
+}
+
+// Load user's business profile from API
+async function loadUserBusiness() {
+    if (!currentUser) return;
+    
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/business/me`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.business) {
+                currentBusiness = data.business;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading business profile:', error);
+    }
+}
+
+// Load public profiles from API
+async function loadPublicProfilesFromAPI() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/business`);
+        if (response.ok) {
+            const data = await response.json();
+            return data.businesses || [];
+        }
+    } catch (error) {
+        console.error('Error loading public profiles:', error);
+    }
+    return [];
 }
 
 function updateAuthUI() {
